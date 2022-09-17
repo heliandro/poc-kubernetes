@@ -6,12 +6,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
+
+var startedAt = time.Now()
 
 func main() {
 	http.HandleFunc("/", Hello)
 	http.HandleFunc("/configMap", ConfigMap)
 	http.HandleFunc("/secret", Secret)
+	http.HandleFunc("/healthz", Healthz)
 	http.ListenAndServe(":8000", nil)
 }
 
@@ -40,4 +44,18 @@ func Secret(w http.ResponseWriter, r *http.Request) {
 	password := os.Getenv("PASSWORD")
 
 	fmt.Fprintf(w, "User: %s | Password: %s", user, password)
+}
+
+func Healthz(w http.ResponseWriter, r *http.Request) {
+	
+	duration := time.Since(startedAt)
+
+	// apenas para fins didaticos | observando o health check do kubernetes
+	if duration.Seconds() < 10 || duration.Seconds() > 30 {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Oh no..server is unhealthy!. Duration: " + duration.String()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Server is healthy!. Duration: " + duration.String()))
+	}
 }

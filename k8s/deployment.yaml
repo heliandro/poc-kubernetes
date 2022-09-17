@@ -17,7 +17,34 @@ spec:
     spec:
       containers:
         - name: "goserver"
-          image: "heliandro/hello-go:v5.2"
+          image: "heliandro/hello-go:v5.3"
+
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 3
+            failureThreshold: 30 # period 3s * 30s failure = 90s => 00:01:30m
+
+          # apos o startup execute os 2 abaixo
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 1
+            timeoutSeconds: 1
+            successThreshold: 1
+            # initialDelaySeconds: 15
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 3
+            failureThreshold: 1
+            # initialDelaySeconds: 10
+
           envFrom:
             - configMapRef:
                 name: api-go-server-env
