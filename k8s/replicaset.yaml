@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: "api-go-server"
+  labels:
+    app: "api-go-server"
+spec:
+  selector:
+    matchLabels:
+      app: "api-go-server"
+  replicas: 2
+  template:
+    metadata:
+      name: "api-go-server"
+      labels:
+        app: "api-go-server"
+    spec:
+      containers:
+        - name: "goserver"
+          image: "heliandro/hello-go:latest"

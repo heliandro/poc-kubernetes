@@ -1,0 +1,7 @@
+apiVersion: v1 
+kind: ConfigMap
+metadata:
+  name: api-go-server-env
+data:
+  NAME: "Heliandro"
+  AGE: "33"

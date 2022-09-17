@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "api-go-server"
+  labels:
+    app: "api-go-server"
+spec:
+  containers:
+    - name: "goserver"
+      image: "heliandro/hello-go:latest"
