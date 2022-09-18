@@ -17,7 +17,15 @@ spec:
     spec:
       containers:
         - name: "goserver"
-          image: "heliandro/hello-go:v5.3"
+          image: "heliandro/hello-go:v5.5"
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 20Mi
+            limits:
+              cpu: 300m
+              memory: 25Mi
 
           startupProbe:
             httpGet:
