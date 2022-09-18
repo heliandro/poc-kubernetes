@@ -51,7 +51,7 @@ func Healthz(w http.ResponseWriter, r *http.Request) {
 	duration := time.Since(startedAt)
 
 	// apenas para fins didaticos | observando o health check do kubernetes
-	if duration.Seconds() < 10 || duration.Seconds() > 30 {
+	if duration.Seconds() < 10 {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Oh no..server is unhealthy!. Duration: " + duration.String()))
 	} else {
