@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-host
+  labels:
+    name: ingress-host
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  rules:
+  - host: "ingress.heliandro.com.br"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: api-go-server-service
+            port: 
+              number: 80
+  tls:
+  - hosts:
+    - "ingress.heliandro.com.br"
+    secretName: letsencrypt-tls
+
